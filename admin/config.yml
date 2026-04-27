@@ -1,0 +1,72 @@
+backend:
+  name: git-gateway
+  branch: main
+
+# Mensagens de commit em português (ficam no GitHub, mas são internas)
+commit_messages:
+  create: 'Cria artigo: {{slug}}'
+  update: 'Atualiza artigo: {{slug}}'
+  delete: 'Remove artigo: {{slug}}'
+  uploadMedia: 'Adiciona imagem: {{path}}'
+  deleteMedia: 'Remove imagem: {{path}}'
+
+# Onde as imagens enviadas pelo painel ficam armazenadas
+media_folder: "uploads"
+public_folder: "/uploads"
+
+# Idioma do painel
+locale: 'pt'
+
+# Endereço do site público (usado para previews)
+site_url: https://academianotare.com.br
+display_url: https://academianotare.com.br
+
+# Estrutura de conteúdo
+collections:
+  - name: "artigos"
+    label: "Artigos"
+    label_singular: "Artigo"
+    folder: "artigos"
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    extension: "json"
+    format: "json"
+    summary: "{{titulo}} — {{categoria}}"
+    sortable_fields: ['data', 'titulo']
+    view_filters:
+      - label: "Em destaque"
+        field: destaque
+        pattern: true
+      - label: "Registro de Imóveis"
+        field: categoria
+        pattern: "Registro de Imóveis"
+      - label: "Tabelionato de Notas"
+        field: categoria
+        pattern: "Tabelionato de Notas"
+    fields:
+      - { label: "Título", name: "titulo", widget: "string", hint: "Título completo do artigo" }
+      - label: "Categoria"
+        name: "categoria"
+        widget: "select"
+        options:
+          - "Registro de Imóveis"
+          - "Tabelionato de Notas"
+          - "Registro Civil"
+          - "Protesto de Títulos"
+          - "Provimentos CNJ"
+          - "Direito Notarial"
+          - "Direito Registral"
+          - "Jurisprudência"
+          - "Doutrina"
+          - "Outros"
+      - { label: "Autor", name: "autor", widget: "string", default: "Prof. Silmar Lopes" }
+      - { label: "Data de publicação", name: "data", widget: "datetime", date_format: "DD/MM/YYYY", time_format: false, format: "DD/MM/YYYY" }
+      - { label: "Tempo de leitura (minutos)", name: "tempo", widget: "number", default: 5, min: 1, max: 60, value_type: "int" }
+      - { label: "Marcar como destaque", name: "destaque", widget: "boolean", default: false, hint: "Se marcado, o artigo aparece na coluna lateral de destaques" }
+      - label: "Conteúdo"
+        name: "conteudo"
+        widget: "markdown"
+        hint: "Use a barra de ferramentas para formatar. Você pode colar texto do Word."
+        buttons: ["bold", "italic", "code", "link", "heading-two", "heading-three", "quote", "bulleted-list", "numbered-list"]
+        editor_components: ["image", "code-block"]
